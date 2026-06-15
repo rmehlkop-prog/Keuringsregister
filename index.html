@@ -252,7 +252,7 @@ const KEURINGEN = [
   { id:2,  cat:'Brandveiligheid', naam:'Noodverlichting / vluchtwegaanduiding',                                          freq:'Jaarlijks',       verantw:'Facilitair',        loc:'Alle locaties',               maand:6, maand2:null },
   { id:3,  cat:'Brandveiligheid', naam:'Brandmeldinstallatie & ontruimingsalarm — onderhoud + inspectie (NEN 2654), Rapport van onderhoud archiveren', freq:'Jaarlijks', verantw:'Facilitair', loc:'Gevaren & Posterholt', maand:9, maand2:null },
   { id:4,  cat:'Brandveiligheid', naam:'Brandmeldinstallatie & ontruimingsalarm — onderhoud + inspectie (beheer door school)', freq:'Jaarlijks', verantw:'School (extern)', loc:'Overige locaties (school)', maand:9, maand2:null },
-  { id:5,  cat:'Brandveiligheid', naam:'Rookmelders testen & logboek (beheer BMI)',                                       freq:'Maandelijks',     verantw:'Facilitair (Rick)', loc:'Gevaren & Posterholt',       maand:1, maand2:null },
+  { id:5,  cat:'Brandveiligheid', naam:'BMI beheer — maandelijkse controlepunten (o.a. rookmelders testen & logboek); overdracht/uitbesteding + korte scholing nodig per 01-10-2026', freq:'Maandelijks', verantw:'Facilitair (Rick, tot 01-10-2026)', loc:'Gevaren & Posterholt', maand:1, maand2:null },
   { id:6,  cat:'Brandveiligheid', naam:'Branddeuren & nooduitgangen inspectie (mnd. veiligheidscontrole, zie BHV-werkplan SharePoint)', freq:'Maandelijks', verantw:'BHV', loc:'Alle locaties', maand:1, maand2:null },
   { id:7,  cat:'Brandveiligheid', naam:'Ontruimingsoefening (logboek)',                                                   freq:'Jaarlijks',       verantw:'BHV',               loc:'Alle locaties',               maand:9, maand2:null },
   // Beveiliging
@@ -262,31 +262,32 @@ const KEURINGEN = [
   { id:10, cat:'Elektrisch',      naam:'NEN 3140 VP-keuring kleine huishoudelijke apparaten (intern VP of extern: Kiwa, Houtman, E-keuring.nl)', freq:'Jaarlijks', verantw:'Facilitair', loc:'Alle locaties', maand:9, maand2:null },
   { id:11, cat:'Elektrisch',      naam:'Noodstroomvoorziening keuring',                                                   freq:'Jaarlijks',       verantw:'Facilitair',        loc:'Alle locaties',               maand:9, maand2:null },
   // Gebouw
-  { id:12, cat:'Gebouw',          naam:'CV-keuring / onderhoud',                                                          freq:'Jaarlijks',       verantw:'Facilitair',        loc:'Alle locaties',               maand:9, maand2:null },
-  { id:13, cat:'Gebouw',          naam:'Gasinstallatie inspectie',                                                        freq:'Jaarlijks',       verantw:'Vastgoed',          loc:'Alle locaties',               maand:9, maand2:null },
+  { id:12, cat:'Gebouw',          naam:'CV- & gasinstallatie onderhoud/keuring (enige gasbron = CV-installatie)',        freq:'Jaarlijks',       verantw:'Facilitair',        loc:'Gevaren & Posterholt',        maand:9, maand2:null },
+  { id:13, cat:'Gebouw',          naam:'CV- & gasinstallatie onderhoud/keuring (beheer school/gemeente)',                freq:'Jaarlijks',       verantw:'School/Gemeente (extern)', loc:'Overige locaties (school)', maand:9, maand2:null },
   { id:14, cat:'Gebouw',          naam:'Legionella watermonsters',                                                        freq:'Kwartaal',        verantw:'Facilitair',        loc:'Alle locaties',               maand:1, maand2:null },
   { id:15, cat:'Gebouw',          naam:'Legionella risicoanalyse update',                                                 freq:'Jaarlijks',       verantw:'Facilitair',        loc:'Alle locaties',               maand:9, maand2:null },
   { id:16, cat:'Gebouw',          naam:'Ventilatiesysteem onderhoud & filterwisseling',                                   freq:'Halfjaarlijks',   verantw:'Facilitair',        loc:'Alle locaties',               maand:3, maand2:9 },
   { id:17, cat:'Gebouw',          naam:'Ventilatieroosters reinigen (ramen, plafonds, muren + in-/uitlaat gebouw; inlaat vaker)', freq:'Jaarlijks', verantw:'Facilitair', loc:'Alle locaties', maand:6, maand2:null },
   { id:18, cat:'Gebouw',          naam:'Lichtarmaturen & verwarmingen reinigen',                                          freq:'Jaarlijks',       verantw:'Facilitair',        loc:'Alle locaties',               maand:6, maand2:null },
-  { id:19, cat:'Gebouw',          naam:'Liftkeuring (indien aanwezig)',                                                   freq:'Halfjaarlijks',   verantw:'Vastgoed',          loc:'Alle locaties',               maand:3, maand2:9 },
-  { id:20, cat:'Gebouw',          naam:'Dak- & gevelin­spectie',                                                          freq:'Jaarlijks',       verantw:'Vastgoed',          loc:'Alle locaties',               maand:5, maand2:null },
+  { id:19, cat:'Gebouw',          naam:'Dak- & gevelin­spectie',                                                          freq:'Jaarlijks',       verantw:'Vastgoed',          loc:'Alle locaties',               maand:5, maand2:null },
+  { id:20, cat:'Gebouw',          naam:'Meubilair jaarlijkse controle (niet verplicht, onderdeel onderhoudsplan)',        freq:'Jaarlijks',       verantw:'Facilitair',        loc:'Alle locaties',               maand:9, maand2:null },
   // Speeltoestellen
   { id:21, cat:'Speeltoestellen', naam:'Speeltoestellen jaarkeuring (NEN-EN 1176/1177)',                                  freq:'Jaarlijks',       verantw:'Vastgoed',          loc:'Alle locaties',               maand:4, maand2:null },
   { id:22, cat:'Speeltoestellen', naam:'Visuele inspectie speeltoestellen (maandelijks)',                                 freq:'Maandelijks',     verantw:'Locatie',           loc:'Alle locaties',               maand:1, maand2:null },
   { id:23, cat:'Speeltoestellen', naam:'Ondergrond / valzone inspectie',                                                  freq:'Jaarlijks',       verantw:'Vastgoed',          loc:'Alle locaties',               maand:4, maand2:null },
+  { id:24, cat:'Speeltoestellen', naam:'Zandbak / valzand hygiënecontrole (vóór zomerseizoen)',                           freq:'Jaarlijks',       verantw:'Facilitair',        loc:'Alle locaties',               maand:5, maand2:null },
   // Arbeidsmiddelen
-  { id:24, cat:'Arbeidsmiddelen', naam:'Trapladders / klimmaterieel — registratie & jaarlijkse keuring (NEN 2484/EN 131); oude IKEA-opstapjes z/leuning vervangen door Altrex professional', freq:'Jaarlijks', verantw:'Facilitair', loc:'Alle locaties', maand:6, maand2:null },
+  { id:25, cat:'Arbeidsmiddelen', naam:'Trapladders / klimmaterieel — registratie & jaarlijkse keuring (NEN 2484/EN 131); oude IKEA-opstapjes z/leuning vervangen door Altrex professional', freq:'Jaarlijks', verantw:'Facilitair', loc:'Alle locaties', maand:6, maand2:null },
   // Arbo
-  { id:25, cat:'Arbo',            naam:'RI&E Arbo (medewerkers) — actualisatie / toetsing',                              freq:'4 jaar / wijz',   verantw:'HR/Arbo',           loc:'Alle locaties',               maand:9, maand2:null },
-  { id:26, cat:'Arbo',            naam:'RI&E Veiligheid & Gezondheid (kinderen) — jaarlijkse actualisatie',              freq:'Jaarlijks',       verantw:'Management',        loc:'Alle locaties',               maand:1, maand2:null },
-  { id:27, cat:'Arbo',            naam:'BHV opleiding & herhaling medewerkers',                                          freq:'Jaarlijks',       verantw:'HR/BHV',            loc:'Alle locaties',               maand:9, maand2:null },
-  { id:28, cat:'Arbo',            naam:'EHBO-verbandkoffers controle inhoud',                                            freq:'Halfjaarlijks',   verantw:'BHV',               loc:'Alle locaties',               maand:3, maand2:9 },
-  { id:29, cat:'Arbo',            naam:'Persoonlijke beschermingsmiddelen check',                                        freq:'Jaarlijks',       verantw:'Facilitair',        loc:'Alle locaties',               maand:9, maand2:null },
+  { id:26, cat:'Arbo',            naam:'RI&E Arbo (medewerkers) — actualisatie / toetsing',                              freq:'4 jaar / wijz',   verantw:'HR/Arbo',           loc:'Alle locaties',               maand:9, maand2:null },
+  { id:27, cat:'Arbo',            naam:'RI&E Veiligheid & Gezondheid (kinderen) — jaarlijkse actualisatie',              freq:'Jaarlijks',       verantw:'Management',        loc:'Alle locaties',               maand:1, maand2:null },
+  { id:28, cat:'Arbo',            naam:'BHV opleiding & herhaling medewerkers',                                          freq:'Jaarlijks',       verantw:'HR/BHV',            loc:'Alle locaties',               maand:9, maand2:null },
+  { id:29, cat:'Arbo',            naam:'EHBO-verbandkoffer (oranje, verzegeld) — vervaldatum controleren; bij verlopen complete inhoud vervangen (alleen bij serieuze verwondingen)', freq:'Jaarlijks', verantw:'BHV', loc:'Alle locaties', maand:3, maand2:null },
+  { id:30, cat:'Arbo',            naam:'Persoonlijke beschermingsmiddelen check',                                        freq:'Jaarlijks',       verantw:'Facilitair',        loc:'Alle locaties',               maand:9, maand2:null },
   // Toezicht
-  { id:30, cat:'Toezicht',        naam:'GGD-inspectie voorbereiding',                                                     freq:'Jaarlijks',       verantw:'Management',        loc:'Alle locaties',               maand:6, maand2:null },
-  { id:31, cat:'Toezicht',        naam:'VOG-register controle',                                                          freq:'Jaarlijks',       verantw:'HR',                loc:'Alle locaties',               maand:9, maand2:null },
-  { id:32, cat:'Toezicht',        naam:'Verzekeringen herbeoordeling',                                                   freq:'Jaarlijks',       verantw:'Inkoop',            loc:'Alle locaties',               maand:4, maand2:null },
+  { id:31, cat:'Toezicht',        naam:'GGD-inspectie voorbereiding',                                                     freq:'Jaarlijks',       verantw:'Management',        loc:'Alle locaties',               maand:6, maand2:null },
+  { id:32, cat:'Toezicht',        naam:'VOG-register controle',                                                          freq:'Jaarlijks',       verantw:'HR',                loc:'Alle locaties',               maand:9, maand2:null },
+  { id:33, cat:'Toezicht',        naam:'Verzekeringen herbeoordeling',                                                   freq:'Jaarlijks',       verantw:'Inkoop',            loc:'Alle locaties',               maand:4, maand2:null },
 ];
 
 // State: gedaan + notities
