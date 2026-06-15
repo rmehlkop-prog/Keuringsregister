@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Keuringsregister 2026 — Leef Kind</title>
+<title>Keuringen- en onderhoudsregister 2026 — Leef Kind</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; background: #F7F6F3; color: #1A1A1A; min-height: 100vh; padding: 1.5rem 1rem 3rem; }
-.wrap { max-width: 980px; margin: 0 auto; }
+.wrap { max-width: 1080px; margin: 0 auto; }
 
 /* Header */
 .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; gap: 1rem; flex-wrap: wrap; }
@@ -51,6 +51,8 @@ h1 { font-size: 20px; font-weight: 600; }
 .filter-btn { padding: 6px 12px; border-radius: 8px; border: 1px solid #DDDBD6; background: white; font-size: 12px; cursor: pointer; transition: all 0.15s; color: #555; }
 .filter-btn:hover { border-color: #E8602C; color: #E8602C; }
 .filter-btn.active { background: #E8602C; border-color: #E8602C; color: white; font-weight: 500; }
+.loc-select { padding: 6px 12px; border-radius: 8px; border: 1px solid #DDDBD6; background: white; font-size: 12px; color: #555; cursor: pointer; outline: none; transition: border-color 0.15s; }
+.loc-select:focus { border-color: #E8602C; }
 .result-count { font-size: 12px; color: #999; margin-left: auto; white-space: nowrap; }
 
 /* Table */
@@ -76,6 +78,7 @@ tbody tr.data-row.done-row td:first-child { text-decoration: line-through; color
 .b-open   { background: #E8F4FD; color: #1A5276; }
 .b-krit   { background: #FEECEC; color: #B02020; }
 .b-done   { background: #F0F0F0; color: #888; }
+.b-loc    { background: #F4F1FB; color: #5B3E96; }
 
 /* Checkbox cell */
 .chk-cell { text-align: center; }
@@ -111,7 +114,7 @@ tbody tr.data-row.done-row td:first-child { text-decoration: line-through; color
 /* Detail modal */
 .modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 100; align-items: center; justify-content: center; padding: 16px; }
 .modal-bg.open { display: flex; }
-.modal { background: white; border-radius: 14px; padding: 28px; max-width: 520px; width: 100%; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.18); animation: slideUp 0.2s ease; }
+.modal { background: white; border-radius: 14px; padding: 28px; max-width: 520px; width: 100%; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.18); animation: slideUp 0.2s ease; max-height: 90vh; overflow-y: auto; }
 @keyframes slideUp { from { opacity:0; transform: translateY(12px); } to { opacity:1; transform: translateY(0); } }
 .modal-close { position: absolute; top: 16px; right: 18px; background: none; border: none; font-size: 20px; color: #AAA; cursor: pointer; line-height: 1; }
 .modal-close:hover { color: #555; }
@@ -138,7 +141,7 @@ tbody tr.data-row.done-row td:first-child { text-decoration: line-through; color
 .prog-title { font-size: 14px; font-weight: 500; margin-bottom: 16px; color: #333; }
 .prog-row { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
 .prog-row:last-child { margin-bottom: 0; }
-.prog-label { font-size: 13px; color: #555; width: 160px; flex-shrink: 0; }
+.prog-label { font-size: 13px; color: #555; width: 220px; flex-shrink: 0; }
 .prog-bar-wrap { flex: 1; height: 8px; background: #F0EEE9; border-radius: 99px; overflow: hidden; }
 .prog-fill { height: 100%; border-radius: 99px; transition: width 0.8s ease; }
 .prog-pct { font-size: 13px; font-weight: 600; width: 42px; text-align: right; flex-shrink: 0; }
@@ -153,7 +156,7 @@ footer { text-align: center; margin-top: 2.5rem; font-size: 11px; color: #CCC; }
   <div class="logo-row">
     <div class="logo">LK</div>
     <div>
-      <h1>Keuringsregister</h1>
+      <h1>Keuringen- en onderhoudsregister</h1>
       <div class="period">Leef Kind — Jaar 2026 · Locatie: <span id="loc-label" style="color:#E8602C;cursor:pointer" onclick="document.getElementById('loc-input').focus()">klik om in te vullen</span>
         <input id="loc-input" type="text" placeholder="Locatienaam…" style="border:none;border-bottom:1px solid #DDDBD6;background:transparent;font-size:13px;color:#1A1A1A;outline:none;margin-left:4px;width:180px;display:none" oninput="updateLocLabel(this.value)" onblur="toggleLocInput(false)" onkeydown="if(event.key==='Enter')this.blur()">
       </div>
@@ -176,7 +179,7 @@ footer { text-align: center; margin-top: 2.5rem; font-size: 11px; color: #CCC; }
 <!-- OVERZICHT -->
 <div id="tab-overzicht" class="tab-panel active">
   <div class="toolbar">
-    <input class="search-box" type="text" id="search-input" placeholder="🔍  Zoek keuring…" oninput="renderTable()">
+    <input class="search-box" type="text" id="search-input" placeholder="🔍  Zoek keuring of onderhoud…" oninput="renderTable()">
     <div class="filter-btns" id="filter-btns">
       <button class="filter-btn active" onclick="setFilter('alle',this)">Alle</button>
       <button class="filter-btn" onclick="setFilter('open',this)">Openstaand</button>
@@ -184,14 +187,20 @@ footer { text-align: center; margin-top: 2.5rem; font-size: 11px; color: #CCC; }
       <button class="filter-btn" onclick="setFilter('krit',this)">✕ Verlopen</button>
       <button class="filter-btn" onclick="setFilter('done',this)">✓ Afgerond</button>
     </div>
+    <select class="loc-select" id="loc-filter" onchange="renderTable()">
+      <option value="alle">Alle locaties</option>
+      <option value="Gevaren & Posterholt">Gevaren &amp; Posterholt</option>
+      <option value="Overige locaties (school)">Overige locaties (school)</option>
+    </select>
     <span class="result-count" id="row-count"></span>
   </div>
   <div class="table-wrap">
     <table>
       <thead>
         <tr>
-          <th class="sortable" data-col="naam" data-type="str">Keuring / Inspectie</th>
+          <th class="sortable" data-col="naam" data-type="str">Keuring / Onderhoud</th>
           <th class="sortable" data-col="cat" data-type="str">Categorie</th>
+          <th class="sortable" data-col="loc" data-type="str">Locatie</th>
           <th class="sortable" data-col="freq" data-type="str">Frequentie</th>
           <th class="sortable" data-col="verantw" data-type="str">Verantw.</th>
           <th class="sortable" data-col="maand" data-type="num">Gepland</th>
@@ -229,7 +238,7 @@ footer { text-align: center; margin-top: 2.5rem; font-size: 11px; color: #CCC; }
   </div>
 </div>
 
-<footer>Leef Kind · Keuringsregister 2026 · Intern gebruik</footer>
+<footer>Leef Kind · Keuringen- en onderhoudsregister 2026 · Intern gebruik</footer>
 </div>
 
 <script>
@@ -239,39 +248,45 @@ const NOW_MONTH = new Date().getMonth() + 1; // 1-12
 
 const KEURINGEN = [
   // Brandveiligheid
-  { id:1,  cat:'Brandveiligheid', naam:'Brandblusser keuring (NEN 2559)',                freq:'Jaarlijks',     verantw:'Facilitair', maand:3,  maand2:null },
-  { id:2,  cat:'Brandveiligheid', naam:'Noodverlichting / vluchtwegaanduiding',          freq:'Jaarlijks',     verantw:'Facilitair', maand:6,  maand2:null },
-  { id:3,  cat:'Brandveiligheid', naam:'Brandmeldinstallatie — onderhoud (NEN 2654-1)', freq:'Halfjaarlijks', verantw:'Facilitair', maand:3,  maand2:9  },
-  { id:4,  cat:'Brandveiligheid', naam:'Brandmeldinstallatie — inspectie (NEN 2654-1)', freq:'Jaarlijks',     verantw:'Facilitair', maand:9,  maand2:null },
-  { id:5,  cat:'Brandveiligheid', naam:'Ontruimingsalarminstallatie',                    freq:'Jaarlijks',     verantw:'Facilitair', maand:9,  maand2:null },
-  { id:6,  cat:'Brandveiligheid', naam:'Rookmelders testen & logboek',                  freq:'Halfjaarlijks', verantw:'BHV',        maand:3,  maand2:9  },
-  { id:7,  cat:'Brandveiligheid', naam:'Branddeuren & nooduitgangen inspectie',          freq:'Kwartaal',      verantw:'BHV',        maand:1,  maand2:null },
-  { id:8,  cat:'Brandveiligheid', naam:'Ontruimingsoefening (logboek)',                  freq:'Jaarlijks',     verantw:'BHV',        maand:9,  maand2:null },
+  { id:1,  cat:'Brandveiligheid', naam:'Blusmiddelen (brandblussers & brandslangen) keuring (NEN 2559)',                 freq:'Jaarlijks',       verantw:'Facilitair',        loc:'Alle locaties',               maand:3, maand2:null },
+  { id:2,  cat:'Brandveiligheid', naam:'Noodverlichting / vluchtwegaanduiding',                                          freq:'Jaarlijks',       verantw:'Facilitair',        loc:'Alle locaties',               maand:6, maand2:null },
+  { id:3,  cat:'Brandveiligheid', naam:'Brandmeldinstallatie & ontruimingsalarm — onderhoud + inspectie (NEN 2654), Rapport van onderhoud archiveren', freq:'Jaarlijks', verantw:'Facilitair', loc:'Gevaren & Posterholt', maand:9, maand2:null },
+  { id:4,  cat:'Brandveiligheid', naam:'Brandmeldinstallatie & ontruimingsalarm — onderhoud + inspectie (beheer door school)', freq:'Jaarlijks', verantw:'School (extern)', loc:'Overige locaties (school)', maand:9, maand2:null },
+  { id:5,  cat:'Brandveiligheid', naam:'Rookmelders testen & logboek (beheer BMI)',                                       freq:'Maandelijks',     verantw:'Facilitair (Rick)', loc:'Gevaren & Posterholt',       maand:1, maand2:null },
+  { id:6,  cat:'Brandveiligheid', naam:'Branddeuren & nooduitgangen inspectie (mnd. veiligheidscontrole, zie BHV-werkplan SharePoint)', freq:'Maandelijks', verantw:'BHV', loc:'Alle locaties', maand:1, maand2:null },
+  { id:7,  cat:'Brandveiligheid', naam:'Ontruimingsoefening (logboek)',                                                   freq:'Jaarlijks',       verantw:'BHV',               loc:'Alle locaties',               maand:9, maand2:null },
+  // Beveiliging
+  { id:8,  cat:'Beveiliging',     naam:'Inbraakalarminstallatie — onderhoud & controle (n.v.t. op Gevaren/Posterholt; beheer school elders)', freq:'Jaarlijks', verantw:'School (extern)', loc:'Overige locaties (school)', maand:9, maand2:null },
   // Elektra
-  { id:9,  cat:'Elektrisch',      naam:'NEN 3140 elektrische installatiekeuring',        freq:'3–5 jaar',      verantw:'Vastgoed',   maand:9,  maand2:null },
-  { id:10, cat:'Elektrisch',      naam:'PAT-keuring draagbare apparatuur',               freq:'Jaarlijks',     verantw:'Facilitair', maand:9,  maand2:null },
-  { id:11, cat:'Elektrisch',      naam:'Noodstroomvoorziening keuring',                  freq:'Jaarlijks',     verantw:'Facilitair', maand:9,  maand2:null },
+  { id:9,  cat:'Elektrisch',      naam:'NEN 3140 elektrische installatiekeuring',                                        freq:'3–5 jaar',        verantw:'Vastgoed',          loc:'Alle locaties',               maand:9, maand2:null },
+  { id:10, cat:'Elektrisch',      naam:'NEN 3140 VP-keuring kleine huishoudelijke apparaten (intern VP of extern: Kiwa, Houtman, E-keuring.nl)', freq:'Jaarlijks', verantw:'Facilitair', loc:'Alle locaties', maand:9, maand2:null },
+  { id:11, cat:'Elektrisch',      naam:'Noodstroomvoorziening keuring',                                                   freq:'Jaarlijks',       verantw:'Facilitair',        loc:'Alle locaties',               maand:9, maand2:null },
   // Gebouw
-  { id:12, cat:'Gebouw',          naam:'CV-keuring / onderhoud',                         freq:'Jaarlijks',     verantw:'Facilitair', maand:9,  maand2:null },
-  { id:13, cat:'Gebouw',          naam:'Gasinstallatie inspectie',                       freq:'Jaarlijks',     verantw:'Vastgoed',   maand:9,  maand2:null },
-  { id:14, cat:'Gebouw',          naam:'Legionella watermonsters',                       freq:'Kwartaal',      verantw:'Facilitair', maand:1,  maand2:null },
-  { id:15, cat:'Gebouw',          naam:'Legionella risicoanalyse update',                freq:'Jaarlijks',     verantw:'Facilitair', maand:9,  maand2:null },
-  { id:16, cat:'Gebouw',          naam:'Ventilatiesystemen onderhoud & filterwisseling', freq:'Halfjaarlijks', verantw:'Facilitair', maand:3,  maand2:9  },
-  { id:17, cat:'Gebouw',          naam:'Liftkeuring (indien aanwezig)',                  freq:'Halfjaarlijks', verantw:'Vastgoed',   maand:3,  maand2:9  },
-  { id:18, cat:'Gebouw',          naam:'Dak- & gevelin­spectie',                         freq:'Jaarlijks',     verantw:'Vastgoed',   maand:5,  maand2:null },
+  { id:12, cat:'Gebouw',          naam:'CV-keuring / onderhoud',                                                          freq:'Jaarlijks',       verantw:'Facilitair',        loc:'Alle locaties',               maand:9, maand2:null },
+  { id:13, cat:'Gebouw',          naam:'Gasinstallatie inspectie',                                                        freq:'Jaarlijks',       verantw:'Vastgoed',          loc:'Alle locaties',               maand:9, maand2:null },
+  { id:14, cat:'Gebouw',          naam:'Legionella watermonsters',                                                        freq:'Kwartaal',        verantw:'Facilitair',        loc:'Alle locaties',               maand:1, maand2:null },
+  { id:15, cat:'Gebouw',          naam:'Legionella risicoanalyse update',                                                 freq:'Jaarlijks',       verantw:'Facilitair',        loc:'Alle locaties',               maand:9, maand2:null },
+  { id:16, cat:'Gebouw',          naam:'Ventilatiesysteem onderhoud & filterwisseling',                                   freq:'Halfjaarlijks',   verantw:'Facilitair',        loc:'Alle locaties',               maand:3, maand2:9 },
+  { id:17, cat:'Gebouw',          naam:'Ventilatieroosters reinigen (ramen, plafonds, muren + in-/uitlaat gebouw; inlaat vaker)', freq:'Jaarlijks', verantw:'Facilitair', loc:'Alle locaties', maand:6, maand2:null },
+  { id:18, cat:'Gebouw',          naam:'Lichtarmaturen & verwarmingen reinigen',                                          freq:'Jaarlijks',       verantw:'Facilitair',        loc:'Alle locaties',               maand:6, maand2:null },
+  { id:19, cat:'Gebouw',          naam:'Liftkeuring (indien aanwezig)',                                                   freq:'Halfjaarlijks',   verantw:'Vastgoed',          loc:'Alle locaties',               maand:3, maand2:9 },
+  { id:20, cat:'Gebouw',          naam:'Dak- & gevelin­spectie',                                                          freq:'Jaarlijks',       verantw:'Vastgoed',          loc:'Alle locaties',               maand:5, maand2:null },
   // Speeltoestellen
-  { id:19, cat:'Speeltoestellen', naam:'Speeltoestellen jaarkeuring (NEN-EN 1176/1177)',freq:'Jaarlijks',     verantw:'Vastgoed',   maand:4,  maand2:null },
-  { id:20, cat:'Speeltoestellen', naam:'Visuele inspectie speeltoestellen (maandelijks)',freq:'Maandelijks',   verantw:'Locatie',    maand:1,  maand2:null },
-  { id:21, cat:'Speeltoestellen', naam:'Ondergrond / valzone inspectie',                freq:'Jaarlijks',     verantw:'Vastgoed',   maand:4,  maand2:null },
+  { id:21, cat:'Speeltoestellen', naam:'Speeltoestellen jaarkeuring (NEN-EN 1176/1177)',                                  freq:'Jaarlijks',       verantw:'Vastgoed',          loc:'Alle locaties',               maand:4, maand2:null },
+  { id:22, cat:'Speeltoestellen', naam:'Visuele inspectie speeltoestellen (maandelijks)',                                 freq:'Maandelijks',     verantw:'Locatie',           loc:'Alle locaties',               maand:1, maand2:null },
+  { id:23, cat:'Speeltoestellen', naam:'Ondergrond / valzone inspectie',                                                  freq:'Jaarlijks',       verantw:'Vastgoed',          loc:'Alle locaties',               maand:4, maand2:null },
+  // Arbeidsmiddelen
+  { id:24, cat:'Arbeidsmiddelen', naam:'Trapladders / klimmaterieel — registratie & jaarlijkse keuring (NEN 2484/EN 131); oude IKEA-opstapjes z/leuning vervangen door Altrex professional', freq:'Jaarlijks', verantw:'Facilitair', loc:'Alle locaties', maand:6, maand2:null },
   // Arbo
-  { id:22, cat:'Arbo',            naam:'RI&E actualisatie / toetsing',                   freq:'4 jaar / wijz', verantw:'HR/Arbo',    maand:9,  maand2:null },
-  { id:23, cat:'Arbo',            naam:'BHV opleiding & herhaling medewerkers',          freq:'Jaarlijks',     verantw:'HR/BHV',     maand:9,  maand2:null },
-  { id:24, cat:'Arbo',            naam:'EHBO-verbandkoffers controle inhoud',            freq:'Halfjaarlijks', verantw:'BHV',        maand:3,  maand2:9  },
-  { id:25, cat:'Arbo',            naam:'Persoonlijke beschermingsmiddelen check',        freq:'Jaarlijks',     verantw:'Facilitair', maand:9,  maand2:null },
+  { id:25, cat:'Arbo',            naam:'RI&E Arbo (medewerkers) — actualisatie / toetsing',                              freq:'4 jaar / wijz',   verantw:'HR/Arbo',           loc:'Alle locaties',               maand:9, maand2:null },
+  { id:26, cat:'Arbo',            naam:'RI&E Veiligheid & Gezondheid (kinderen) — jaarlijkse actualisatie',              freq:'Jaarlijks',       verantw:'Management',        loc:'Alle locaties',               maand:1, maand2:null },
+  { id:27, cat:'Arbo',            naam:'BHV opleiding & herhaling medewerkers',                                          freq:'Jaarlijks',       verantw:'HR/BHV',            loc:'Alle locaties',               maand:9, maand2:null },
+  { id:28, cat:'Arbo',            naam:'EHBO-verbandkoffers controle inhoud',                                            freq:'Halfjaarlijks',   verantw:'BHV',               loc:'Alle locaties',               maand:3, maand2:9 },
+  { id:29, cat:'Arbo',            naam:'Persoonlijke beschermingsmiddelen check',                                        freq:'Jaarlijks',       verantw:'Facilitair',        loc:'Alle locaties',               maand:9, maand2:null },
   // Toezicht
-  { id:26, cat:'Toezicht',        naam:'GGD-inspectie voorbereiding',                    freq:'Jaarlijks',     verantw:'Management', maand:6,  maand2:null },
-  { id:27, cat:'Toezicht',        naam:'VOG-register controle',                          freq:'Jaarlijks',     verantw:'HR',         maand:9,  maand2:null },
-  { id:28, cat:'Toezicht',        naam:'Verzekeringen herbeoordeling',                   freq:'Jaarlijks',     verantw:'Inkoop',     maand:4,  maand2:null },
+  { id:30, cat:'Toezicht',        naam:'GGD-inspectie voorbereiding',                                                     freq:'Jaarlijks',       verantw:'Management',        loc:'Alle locaties',               maand:6, maand2:null },
+  { id:31, cat:'Toezicht',        naam:'VOG-register controle',                                                          freq:'Jaarlijks',       verantw:'HR',                loc:'Alle locaties',               maand:9, maand2:null },
+  { id:32, cat:'Toezicht',        naam:'Verzekeringen herbeoordeling',                                                   freq:'Jaarlijks',       verantw:'Inkoop',            loc:'Alle locaties',               maand:4, maand2:null },
 ];
 
 // State: gedaan + notities
@@ -320,7 +335,7 @@ function renderKPI() {
 
   document.getElementById('kpi-grid').innerHTML = `
     <div class="kpi-card ${done===total?'kpi-good':''}">
-      <div class="kpi-label">Totaal keuringen</div>
+      <div class="kpi-label">Totaal items</div>
       <div class="kpi-value">${total}</div>
       <div class="kpi-sub">${done} afgerond · ${total-done} open</div>
       <div class="kpi-bar"><div class="kpi-bar-fill" style="width:${pct}%;background:#E8602C"></div></div>
@@ -334,7 +349,7 @@ function renderKPI() {
     <div class="kpi-card ${krit>0?'kpi-krit':'kpi-good'}">
       <div class="kpi-label">Verlopen</div>
       <div class="kpi-value">${krit}</div>
-      <div class="kpi-sub">Keuringen te laat ${krit===0?'— alles op tijd':'— actie vereist'}</div>
+      <div class="kpi-sub">Items te laat ${krit===0?'— alles op tijd':'— actie vereist'}</div>
     </div>
     <div class="kpi-card ${soon>0?'kpi-warn':'kpi-good'}">
       <div class="kpi-label">Binnenkort gepland</div>
@@ -373,8 +388,10 @@ document.querySelectorAll('th.sortable').forEach(th => {
 
 function renderTable() {
   const q = (document.getElementById('search-input').value||'').toLowerCase();
+  const locVal = document.getElementById('loc-filter').value;
   let rows = KEURINGEN.filter(k => {
     if(q && !k.naam.toLowerCase().includes(q) && !k.cat.toLowerCase().includes(q)) return false;
+    if(locVal !== 'alle' && k.loc !== locVal) return false;
     const s = getStatus(k);
     if(activeFilter === 'open') return s === 'open';
     if(activeFilter === 'soon') return s === 'soon';
@@ -392,8 +409,8 @@ function renderTable() {
   }
 
   if(!rows.length) {
-    document.getElementById('tbl-body').innerHTML = `<tr><td colspan="7"><div class="no-results">Geen keuringen gevonden.</div></td></tr>`;
-    document.getElementById('row-count').textContent = '0 keuringen';
+    document.getElementById('tbl-body').innerHTML = `<tr><td colspan="8"><div class="no-results">Geen items gevonden.</div></td></tr>`;
+    document.getElementById('row-count').textContent = '0 items';
     return;
   }
 
@@ -402,8 +419,8 @@ function renderTable() {
   const html = [];
   rows.forEach(k => {
     if(k.cat !== lastCat) {
-      const emoji = {Brandveiligheid:'🔥', Elektrisch:'⚡', Gebouw:'🏗️', Speeltoestellen:'🛝', Arbo:'🦺', Toezicht:'📋'}[k.cat]||'•';
-      html.push(`<tr class="section-row"><td colspan="7">${emoji}  ${k.cat}</td></tr>`);
+      const emoji = {Brandveiligheid:'🔥', Beveiliging:'🔒', Elektrisch:'⚡', Gebouw:'🏗️', Speeltoestellen:'🛝', Arbeidsmiddelen:'🪜', Arbo:'🦺', Toezicht:'📋'}[k.cat]||'•';
+      html.push(`<tr class="section-row"><td colspan="8">${emoji}  ${k.cat}</td></tr>`);
       lastCat = k.cat;
     }
     const s = state[k.id];
@@ -411,6 +428,7 @@ function renderTable() {
     html.push(`<tr class="data-row${isDone?' done-row':''}" onclick="openModal(${k.id})">
       <td>${k.naam}</td>
       <td><span class="badge b-open" style="background:#F0F8FF;color:#1A5276">${k.cat}</span></td>
+      <td><span class="badge b-loc">${k.loc}</span></td>
       <td>${k.freq}</td>
       <td>${k.verantw}</td>
       <td>${geplndLabel(k)}</td>
@@ -422,7 +440,7 @@ function renderTable() {
   });
 
   document.getElementById('tbl-body').innerHTML = html.join('');
-  document.getElementById('row-count').textContent = `${rows.length} van ${KEURINGEN.length} keuringen`;
+  document.getElementById('row-count').textContent = `${rows.length} van ${KEURINGEN.length} items`;
 }
 
 function toggleDone(id) {
@@ -448,6 +466,7 @@ function openModal(id) {
     <div class="modal-grid">
       <div class="modal-kpi"><div class="modal-kpi-label">Frequentie</div><div class="modal-kpi-val">${k.freq}</div></div>
       <div class="modal-kpi"><div class="modal-kpi-label">Verantwoordelijke</div><div class="modal-kpi-val">${k.verantw}</div></div>
+      <div class="modal-kpi"><div class="modal-kpi-label">Locatie</div><div class="modal-kpi-val">${k.loc}</div></div>
       <div class="modal-kpi"><div class="modal-kpi-label">Gepland moment</div><div class="modal-kpi-val">${geplndLabel(k)}</div></div>
       <div class="modal-kpi"><div class="modal-kpi-label">Afgerond op</div><div class="modal-kpi-val">${s.doneDate||'—'}</div></div>
     </div>
@@ -499,15 +518,15 @@ function renderKalender() {
         <div class="kal-dot ${s}"></div>
         <div>
           <div class="kal-name">${k.naam}</div>
-          <div class="kal-cat">${k.cat} · ${k.verantw}</div>
+          <div class="kal-cat">${k.cat} · ${k.loc} · ${k.verantw}</div>
         </div>
       </div>`;
-    }).join('') : `<div class="kal-empty">Geen keuringen gepland</div>`;
+    }).join('') : `<div class="kal-empty">Geen items gepland</div>`;
 
     return `<div class="kal-month" style="${isNow?'border-color:#E8602C;box-shadow:0 0 0 2px #F5C4A8':''}">
       <div class="kal-month-head">
         <div class="kal-month-title">${isNow?'📍 ':''}<strong>${mn}</strong></div>
-        <div class="kal-count">${items.length} keuring${items.length!==1?'en':''}</div>
+        <div class="kal-count">${items.length} item${items.length!==1?'s':''}</div>
       </div>
       ${itemsHtml}
     </div>`;
@@ -518,7 +537,7 @@ function renderKalender() {
 function renderVoortgang() {
   // Per categorie
   const cats = [...new Set(KEURINGEN.map(k=>k.cat))];
-  const catColors = {Brandveiligheid:'#E8602C',Elektrisch:'#2E86C1',Gebouw:'#27AE60',Speeltoestellen:'#E6920A',Arbo:'#8E44AD',Toezicht:'#1ABC9C'};
+  const catColors = {Brandveiligheid:'#E8602C',Beveiliging:'#34495E',Elektrisch:'#2E86C1',Gebouw:'#27AE60',Speeltoestellen:'#E6920A',Arbeidsmiddelen:'#A0522D',Arbo:'#8E44AD',Toezicht:'#1ABC9C'};
   document.getElementById('prog-cats').innerHTML = cats.map(cat => {
     const items = KEURINGEN.filter(k=>k.cat===cat);
     const done = items.filter(k=>state[k.id].done).length;
@@ -540,7 +559,7 @@ function renderVoortgang() {
   ];
   document.getElementById('prog-kw').innerHTML = kwData.map(kw => {
     const items = KEURINGEN.filter(k => kw.months.includes(k.maand) || (k.maand2 && kw.months.includes(k.maand2)));
-    if(!items.length) return `<div class="prog-row"><div class="prog-label">${kw.lbl}</div><div style="font-size:12px;color:#CCC">Geen keuringen</div></div>`;
+    if(!items.length) return `<div class="prog-row"><div class="prog-label">${kw.lbl}</div><div style="font-size:12px;color:#CCC">Geen items</div></div>`;
     const done = items.filter(k=>state[k.id].done).length;
     const pct = Math.round(done/items.length*100);
     const col = pct>=80?'#27AE60':pct>=40?'#E6920A':'#C0392B';
@@ -554,10 +573,10 @@ function renderVoortgang() {
 
 // ===================== EXPORT =====================
 function exportCSV() {
-  const rows = [['Keuring','Categorie','Frequentie','Verantwoordelijke','Gepland','Status','Afgerond op','Notitie']];
+  const rows = [['Keuring/Onderhoud','Categorie','Locatie','Frequentie','Verantwoordelijke','Gepland','Status','Afgerond op','Notitie']];
   KEURINGEN.forEach(k => {
     const s = state[k.id];
-    rows.push([k.naam, k.cat, k.freq, k.verantw, geplndLabel(k), getStatus(k), s.doneDate||'', s.note.replace(/\n/g,' ')]);
+    rows.push([k.naam, k.cat, k.loc, k.freq, k.verantw, geplndLabel(k), getStatus(k), s.doneDate||'', s.note.replace(/\n/g,' ')]);
   });
   const csv = rows.map(r => r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(';')).join('\n');
   const a = document.createElement('a');
